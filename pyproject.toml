@@ -1,0 +1,14 @@
+[project]
+name = "EOL-NeT"
+version = "0.0.1"
+description = "EOL-Net is an open-source, vendor-agnostic service that aggregates End-of-Life (EOL) and End-of-Service (EOS) dates for network devices."
+readme = "README.md"
+requires-python = ">=3.13"
+authors = ["Krzysztof S"]
+dependencies = [
+    "django>=5.2.1",
+    "djangorestframework>=3.16.0",
+    "djangorestframework-simplejwt>=5.5.0",
+    "drf-spectacular>=0.28.0",
+    "whitenoise>=6.9.0",
+]
