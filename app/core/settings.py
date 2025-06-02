@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     # Third-party apps
     'rest_framework',
     'drf_spectacular',
+    'import_export',
     # 'djangorestframework-simplejwt', # Enabled in future
 
     # EOL-Net apps
@@ -63,7 +64,7 @@ TEMPLATES = [
         'DIRS': [
             BASE_DIR / 'templates',
         ],
-        'APP_DIRS': False,
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
