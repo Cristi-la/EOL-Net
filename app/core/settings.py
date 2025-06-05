@@ -1,4 +1,6 @@
+import os
 from pathlib import Path
+from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,22 +29,65 @@ INSTALLED_APPS = [
 
     # Third-party apps
     'rest_framework',
+    'rest_framework_simplejwt',
     'drf_spectacular',
+    'django_filters',
     'import_export',
-    # 'djangorestframework-simplejwt', # Enabled in future
 
     # EOL-Net apps
     'apps.eol',
+    'apps.api',
 ]
 
+API_THROTTLE_RATES = {
+    "anon": "10/min",
+    "default": "100/min",
+    "ha": "1000/min",
+}
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PERMISSION_CLASSES': [
+        "apps.api.permissions.TokenPermission",
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+    "DEFAULT_THROTTLE_CLASSES": (
+        "apps.api.throttles.DynamicScopeRateThrottle",
+    ),
+
+    "DEFAULT_THROTTLE_RATES": API_THROTTLE_RATES,
+    "DEFAULT_PAGINATION_CLASS": "apps.api.pagination.StandardResultsSetPagination",
+    "PAGE_SIZE": 1000,
 }
+
+
+SIMPLE_JWT = {
+    # Make JWT valid for 1 year:
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=365),
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    # We’ll use our token_key claim to look up DB metadata if needed.
+    "USER_ID_CLAIM": "user_id",  
+    "USER_ID_FIELD": "id",
+}
+
+
 SPECTACULAR_SETTINGS = {
     'TITLE': 'EOL-Net API',
-    'DESCRIPTION': 'API for checking end of life (EOL) status of various entities.',
+    "DESCRIPTION": "API for managing Vendors, Products, and Software lifecycles (EOL/EOS).",   
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': True,
+
+    # "SECURITY_SCHEMAS": [
+    #     {
+    #         'type': 'http',
+    #         'scheme': 'header',
+    #         'name': 'Authorization',
+    #         'description': 'JWT token for authentication. Format: `Bearer <token>`',
+    #     },
+    # ],
 }
 
 MIDDLEWARE = [
