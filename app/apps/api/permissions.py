@@ -1,4 +1,4 @@
-# apps/eol/permissions.py
+# apps/api/permissions.py
 
 from rest_framework import permissions
 from rest_framework.exceptions import PermissionDenied, NotAuthenticated
